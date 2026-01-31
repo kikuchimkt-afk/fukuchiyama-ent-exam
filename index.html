@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福知山公立大学 地域経営学部 英語入試分析 & アーカイブ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfbf7; color: #4a4a4a; scroll-behavior: smooth; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 700px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 350px; 
+        }
+        .active-tab { border-bottom: 3px solid #d97706; color: #92400e; font-weight: 700; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .problem-text { font-family: 'Georgia', 'serif'; line-height: 1.8; color: #2d3748; }
+    </style>
+    <!-- Chosen Palette: Academic Gold & Stone. High contrast for readability. -->
+    <!-- Application Structure Plan:
+         1. Hero Section: High impact title and primary CTA (Past Paper Archive).
+         2. Benefits: Why analyze these specific papers? (Regional focus, logic, summary skills).
+         3. Analysis Dashboard: Visual data on word counts and difficulty.
+         4. Interactive Past Paper Viewer: The core 'Archive' where users can read R5-R7 original texts.
+         5. Strategy Section: Deep dive into linguistic and thematic tactics.
+         6. Footer: Final encouragement.
+    -->
+    <!-- Visualization & Content Choices:
+         - Past Paper Links: Interactive cards that open a full-text viewer.
+         - Charts: Chart.js for data stability.
+         - Content: Integrated original texts provided in conversation.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-stone-50 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-stone-800 tracking-tight">
+                <span class="text-amber-600">FUKUCHIYAMA</span> Exam Lab
+            </h1>
+            <nav class="hidden md:flex space-x-8 text-sm font-bold text-stone-600">
+                <a href="#analysis" class="hover:text-amber-600 transition-colors">分析データ</a>
+                <a href="#archive" class="hover:text-amber-600 transition-colors">過去問アーカイブ</a>
+                <a href="#strategy" class="hover:text-amber-600 transition-colors">攻略法</a>
+            </nav>
+            <a href="#archive" class="bg-amber-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-amber-700 transition shadow-md">
+                過去問を見る
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative bg-white pt-20 pb-16 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center">
+                    <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-amber-700 uppercase bg-amber-100 rounded-full">
+                        地域経営学部 受験生必見
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-extrabold text-stone-900 mb-6 leading-tight">
+                        合格を掴むための<br><span class="text-amber-600 underline decoration-stone-200">過去問分析 & 戦略レポート</span>
+                    </h2>
+                    <p class="text-xl text-stone-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                        直近3ヵ年の出題傾向を完全解剖。出題意図を理解し、200字要約を攻略するための「読み方」と「解き方」を伝授します。
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="#archive" class="px-8 py-4 bg-stone-900 text-white rounded-xl font-bold text-lg hover:bg-stone-800 transition shadow-lg">過去問アーカイブへ</a>
+                        <a href="#analysis" class="px-8 py-4 bg-white text-stone-900 border-2 border-stone-200 rounded-xl font-bold text-lg hover:bg-stone-50 transition">分析を見る</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Visual Element (Circle Background) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-stone-50 rounded-full -z-0"></div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="py-16 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                        <div class="text-3xl mb-4">📍</div>
+                        <h4 class="text-lg font-bold mb-2">地域課題の把握</h4>
+                        <p class="text-sm text-stone-600">震災・人口減・共生社会。出題される「テーマ」そのものが、本学部の学びの核心です。</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                        <div class="text-3xl mb-4">📑</div>
+                        <h4 class="text-lg font-bold mb-2">要約力の養成</h4>
+                        <p class="text-sm text-stone-600">450語を200字にまとめる「編集能力」は、ビジネスや行政の現場で最も求められる力です。</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                        <div class="text-3xl mb-4">🖋️</div>
+                        <h4 class="text-lg font-bold mb-2">論理的思考の深化</h4>
+                        <p class="text-sm text-stone-600">英字新聞の社説を読み解くことで、事実と意見、課題と対策を整理する論理性を養います。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Dashboard Section -->
+        <section id="analysis" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-end justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-stone-900 mb-4">出題傾向分析ダッシュボード</h2>
+                        <p class="text-stone-600">過去3年間のデータを比較し、戦略的な学習計画を立てましょう。</p>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="updateChartType('bar')" class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Bar</button>
+                        <button onclick="updateChartType('line')" class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Line</button>
+                    </div>
+                </div>
+                
+                <div class="bg-stone-50 rounded-3xl p-8 border border-stone-100">
+                    <div class="chart-container">
+                        <canvas id="examTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Past Question Archive Section -->
+        <section id="archive" class="py-20 bg-stone-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-stone-900 mb-4">過去問アーカイブ</h2>
+                    <p class="text-stone-600">年度をクリックして、実際の試験問題（英文）を確認できます。</p>
+                </div>
+
+                <div class="grid lg:grid-cols-4 gap-6 mb-12">
+                    <button onclick="viewProblem('R7')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-amber-600 text-left">
+                        <span class="text-xs font-bold text-amber-600 mb-1 block">令和7年度（2025）</span>
+                        <h4 class="font-bold text-stone-800 text-lg mb-2">伝統産業の復興</h4>
+                        <p class="text-xs text-stone-500">Noto's Cultural Industries: Keep Local Craft Traditions Alive...</p>
+                    </button>
+                    <button onclick="viewProblem('R6')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
+                        <span class="text-xs font-bold text-stone-500 mb-1 block">令和6年度（2024）</span>
+                        <h4 class="font-bold text-stone-800 text-lg mb-2">人口減少社会</h4>
+                        <p class="text-xs text-stone-500">Japan tries to confront its ever-shrinking population...</p>
+                    </button>
+                    <button onclick="viewProblem('R5')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
+                        <span class="text-xs font-bold text-stone-500 mb-1 block">令和5年度（2023）</span>
+                        <h4 class="font-bold text-stone-800 text-lg mb-2">多文化共生教育</h4>
+                        <p class="text-xs text-stone-500">Japan’s education system is failing kids with foreign roots...</p>
+                    </button>
+                    <div class="p-6 bg-stone-200/50 rounded-2xl border-2 border-dashed border-stone-400 flex items-center justify-center text-center">
+                        <p class="text-stone-500 font-bold text-sm">令和8年度<br>予想問題 準備中</p>
+                    </div>
+                </div>
+
+                <!-- Problem Viewer Container -->
+                <div id="problemViewer" class="bg-white rounded-3xl shadow-xl overflow-hidden hidden animate-fadeIn border border-stone-200">
+                    <div class="bg-stone-900 text-white p-6 flex justify-between items-center">
+                        <div>
+                            <span id="viewYear" class="text-xs font-bold text-amber-400 uppercase tracking-widest">YEAR</span>
+                            <h3 id="viewTitle" class="text-xl font-bold">タイトル</h3>
+                        </div>
+                        <button onclick="closeViewer()" class="text-stone-400 hover:text-white transition">閉じる ×</button>
+                    </div>
+                    <div class="p-8 md:p-12 max-h-[600px] overflow-y-auto">
+                        <div id="viewContent" class="problem-text text-lg whitespace-pre-wrap">
+                            <!-- Content injected by JS -->
+                        </div>
+                        <div class="mt-10 p-6 bg-amber-50 rounded-xl border border-amber-100">
+                            <h5 class="font-bold text-amber-800 mb-2">設問内容：</h5>
+                            <p class="text-stone-700">次の英文の要約を 200 字以内の日本語で書きなさい。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategy Tabs Section -->
+        <section id="strategy" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex overflow-x-auto border-b border-stone-200 mb-10">
+                    <button onclick="switchTab('linguistic')" id="tab-linguistic" class="active-tab px-8 py-4 text-sm font-bold whitespace-nowrap">言語学的分析</button>
+                    <button onclick="switchTab('thematic')" id="tab-thematic" class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">テーマ考察</button>
+                    <button onclick="switchTab('summary')" id="tab-summary" class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">要約の極意</button>
+                </div>
+
+                <div id="content-linguistic" class="tab-content active">
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">難易度と語彙の傾向</h3>
+                            <ul class="space-y-6">
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">1</span>
+                                    <div>
+                                        <h4 class="font-bold mb-1">社説特有の論理構造</h4>
+                                        <p class="text-stone-600 text-sm">英字新聞の社説は「導入（ニュース）→分析（課題）→提言（未来）」の順で構成されます。この流れを意識するだけで読解速度が上がります。</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">2</span>
+                                    <div>
+                                        <h4 class="font-bold mb-1">無生物主語の処理能力</h4>
+                                        <p class="text-stone-600 text-sm">`This focus on the young conflicts with...` のような主語を「若者への注力によって〜」と動詞的に訳す力が求められます。</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-stone-50 p-8 rounded-2xl border border-stone-100">
+                            <h4 class="font-bold mb-4">頻出キーワード例</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Intangible Cultural Property</span>
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Demographic crisis</span>
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Regional disparity</span>
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Division of labor</span>
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Life expectancy</span>
+                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Opportunities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-thematic" class="tab-content">
+                    <!-- Thematic content from report -->
+                    <div class="max-w-3xl">
+                        <h3 class="text-2xl font-bold mb-6">地域経営学部が求める「感度」</h3>
+                        <p class="text-stone-600 mb-6 leading-relaxed">
+                            本学部の試験は、英語力以上に「地域社会のリーダーとしての素養」を問うています。震災からの復興や人口減少といったテーマは、入学後の学びそのものです。
+                        </p>
+                        <div class="grid gap-4">
+                            <div class="p-6 bg-amber-50 rounded-xl">
+                                <h5 class="font-bold text-amber-900 mb-2 underline decoration-amber-200">リーダーの視点で読む</h5>
+                                <p class="text-sm text-stone-700 leading-relaxed">「大変だ」で終わるのではなく、「どのような制度的・経済的な打ち手が必要か」という解決策（対策案）までを読み取ることが高得点の鍵です。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-summary" class="tab-content">
+                    <!-- Summary Strategy content -->
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="p-8 bg-stone-900 text-white rounded-2xl">
+                            <h4 class="text-amber-400 font-bold mb-4">Step 1: 骨組みの抽出</h4>
+                            <p class="text-sm opacity-80 leading-relaxed">各段落のトピックセンテンス（第1文付近）を拾い、文章の論理マップ（現状→原因→対策）を作ります。</p>
+                        </div>
+                        <div class="p-8 bg-stone-900 text-white rounded-2xl">
+                            <h4 class="text-amber-400 font-bold mb-4">Step 2: 抽象化（リライト）</h4>
+                            <p class="text-sm opacity-80 leading-relaxed">具体的な地名や特定の数値を「被災地」「人口指標」などの一般名称に置き換え、文字数を節約します。</p>
+                        </div>
+                        <div class="p-8 bg-stone-900 text-white rounded-2xl">
+                            <h4 class="text-amber-400 font-bold mb-4">Step 3: 日本語の整合性</h4>
+                            <p class="text-sm opacity-80 leading-relaxed">最後に「〜である」「〜が重要だ」などの結びを整え、200字という限られた枠内で一貫性を持たせます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="py-20 bg-stone-900 text-white text-center">
+            <div class="max-w-3xl mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-6">合格への第一歩は、敵を知ることから。</h2>
+                <p class="text-stone-400 mb-10 leading-relaxed">
+                    分析レポートを読み込み、過去問アーカイブで実際のスピード感を体感してください。
+                    地域をリードする未来の大学生を応援しています。
+                </p>
+                <a href="#archive" class="inline-block px-10 py-5 bg-amber-600 text-white rounded-full font-bold text-xl hover:bg-amber-700 transition shadow-xl">
+                    過去問を今すぐチェック
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-950 text-stone-600 py-10 border-t border-stone-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm">
+                &copy; 2025 Fukuchiyama Exam Analysis Portal. All rights reserved.
+            </div>
+            <div class="flex gap-6 text-xs font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-amber-600">Overview</a>
+                <a href="#" class="hover:text-amber-600">Privacy</a>
+                <a href="#" class="hover:text-amber-600">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Past Questions Data
+        const problems = {
+            R7: {
+                year: "令和7年度 (2025)",
+                title: "震災復興と伝統産業",
+                content: `The Noto Peninsula Earthquake dealt a heavy blow to the region’s traditional culture and industries. Detailed support for the affected areas is essential to protect long-held techniques and cherished townscapes.
+Wajima lacquerware, a traditional craft of Wajima, Ishikawa Prefecture, which has been designated as an Important Intangible Cultural Property by the central government, suffered damage to its production and sales bases, which were destroyed and burned by the earthquake and a subsequent fire at the Wajima Morning Market.
+Many artisans and related people lost their workshops, homes and stores, and continue to live as evacuees. The city is home to three artisans who are officially honored as living national treasures. One of them was seriously injured.
+Wajima lacquerware, known for its high level of artistry, is one of the region’s leading industries. There are at least 100 processes involved, from the initial wood processing to the final decoration, with a high degree of division of labor by artisans.
+Since every process is indispensable, it will be difficult to restart the business as long as the artisans and other workers remain scattered.
+In the first place, demand for Wajima lacquerware had become sluggish due to changing lifestyles, and the aging of the artisans was also an issue. Their livelihoods and workplaces must be quickly rebuilt to restore the production system.
+The government will reportedly begin subsidizing the costs necessary to continue the traditional craft businesses, including securing tools and raw materials. Depopulation is continuing in the affected areas. If nothing is done, more and more artisans could leave the business, which could accelerate the decline of the region. It is important to steadily implement support for restarting businesses.
+Temporary joint workshops for traditional handicraft artisans were built in Fukushima Prefecture after the 2011 Great East Japan Earthquake. In the case of Wajima lacquerware, where the division of labor is well established, it would be effective to provide such a place.
+One idea would be to establish a facility that handles production, sales and information dissemination as a symbol of reconstruction from the earthquake. This should be considered broadly in conjunction with the reconstruction of the fire-raze Wajima Morning Market.
+Encouraging people to buy local products will also support the affected areas.
+In addition to Wajima lacquerware, other traditional craft businesses in the prefecture, such as stores selling Kutani ware porcelain, were also affected by the disaster. Many sake breweries in Wajima, long known as an excellent place for sake brewing, are reportedly facing difficulties in producing sake this season due to the disaster.
+Fairs selling Noto crafts and sake have already been held in various locations and online. It is necessary to encourage such events.
+Some of the damaged buildings and townscapes have high cultural value. Cultural assets are a source of emotional support for local residents and are also important tourism resources.
+In order to protect local communities and restore civic vitality, the central and local governments should carefully listen to the affected people as to what they need and formulate concrete medium- to long-term support measures until recovery is completed.`
+            },
+            R6: {
+                year: "令和6年度 (2024)",
+                title: "人口減少と少子高齢化",
+                content: `The number of Japanese will continue to shrink, falling by about 30% over the next half century. In fact, this isn’t news. This trajectory has been evident, remarked upon and complained about for some time. It is precisely the failure of successive governments to do more than complain about this trend that is most revealing and most worrisome.
+According to the National Institute of Population and Social Security Research, Japan’s population will fall from 126.15 million in 2020 to 87 million in 2070. This number includes foreign residents; they are projected to constitute a little over 10% of the total, up from just 2.2% in 2020.
+The decline has been in place for 15 years; the country’s population peaked in 2008 at 128 million and the downward trend will continue. The pace of decline has slowed — total population decreased 0.43% last year while it was 0.65% the year before — mostly a result of increased-life expectancy but also because a larger number of foreigners are taking up residence here. This has also pushed back milestones such as when Japan will hit the 100 million mark — now it is projected to occur in 2056, rather than 2053.
+A smaller, older population is generally considered a liability. It is less dynamic, with less creativity and energy to devote to solving problems, either domestic or international. The society’s focus tends to be on health care and assistance for the expanding elderly cohort, which drains increasingly scarce resources. A “grayer” population generates less wealth and is a bigger burden on pension systems.
+A shrinking population when the world is undergoing increasing strain could be a good thing. The country’s environmental footprint is reduced since a smaller population consumes less. Japan’s ability to successfully manage the transition to a smaller size could be a model for other countries; most developed economies are experiencing similar demographic shifts. Japan is merely leading in this evolution.
+Thus far, Japan has addressed this phenomenon by focusing on the fertility rate. A country needs a total fertility rate, the average number of children a woman is expected to have in her lifetime, of 2.07 to maintain its population size. In 2021, Japan’s total fertility rate was 1.3; as a result, new births fell below 800,000 for the first time ever. The government’s goal is 1.8; the new projections project a rate of 1.36 in 2070.
+That widening gap prompted Prime Minister Fumio Kishida to warn in January that Japan was “on the brink of not being able to maintain social functions” as a result of a looming demographic crisis. His belief that “the next six to seven years are the last chance to reverse the trend of declining birthrate,” spurred his administration to draft a package of aid measures for children and child-rearing, which will culminate in a plan to double child-related spending in the annual basic economic and fiscal policy guidelines in June. This focus on the young conflicts with the demand by older citizens for attention and resources, and the elderly, unlike babies and children, can and do vote.`
+            },
+            R5: {
+                year: "令和5年度 (2023)",
+                title: "外国籍児童への教育支援",
+                content: `There are many children in Japan with foreign roots who, because they don’t speak Japanese well, cannot take regular classes at school.
+One in 20 public primary and junior high school students across the country who need Japanese-language lessons have been put in classes originally intended for children with disabilities, a national survey recently found for the first time. The figure for primary and junior high students overall is one in 30.
+Instruction in these classes is designed for children with disabilities, so there is no reason to put students with foreign backgrounds in them simply because they are not proficient in Japanese. The problem is that the schools are not prepared to teach Japanese.
+Some of these students were recommended by the schools themselves to go into special needs classes because they didn’t have the capacity to put the children into regular classes. There were also cases of schools and education boards labelling foreign children as developmentally disabled because they were “slow learners,” ignoring the impact of the language barrier.
+The national and local governments have a duty to advance Japanese language education for foreign residents. This was spelled out in law in June 2019, but there is a great deal of regional disparity when it comes to the law’s implementation.
+There are some local governments that have Japanese language classes at every public school, and which post Japanese language teachers and volunteer interpreters. But there are places that do not provide enough language support because they do not have enough staff to fill this need.
+First, we would like to see the teachers and volunteers that are available used effectively, and methods developed to teach Japanese to as many children as possible. There are already practical examples of language teachers and others going from school to school, or teaching students from multiple schools at the same time online. These are worth considering.
+A Japanese language education system must be created ahead of the expected increase in the number of children coming to live in Japan from overseas.
+What is needed is an environment that equips these children with a certain level of Japanese that will allow them to join regular classes. It is important for the education system to create training programs that produce skilled teachers who understand the diverse backgrounds of the students.
+While almost all junior high graduates go on to high school or vocational schools, the figure for students who need Japanese lessons is under 90%. It is very important that every child in Japan be afforded the chance to learn, without discrimination. And their futures must not be limited simply because their schools were unprepared to accept them.`
+            }
+        };
+
+        // Charts Logic
+        const examData = {
+            years: ['令和5年度', '令和6年度', '令和7年度'],
+            wordCounts: [440, 450, 430],
+            difficulty: [2, 3, 2.5]
+        };
+
+        let chartInstance = null;
+
+        window.onload = function() {
+            if (typeof Chart !== 'undefined') {
+                renderChart('bar');
+            }
+        };
+
+        function renderChart(type) {
+            const ctx = document.getElementById('examTrendChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: examData.years,
+                    datasets: [{
+                        label: '語数 (Words)',
+                        data: examData.wordCounts,
+                        backgroundColor: 'rgba(217, 119, 6, 0.4)',
+                        borderColor: 'rgba(217, 119, 6, 1)',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '難易度 (Difficulty)',
+                        data: examData.difficulty,
+                        borderColor: '#444',
+                        borderWidth: 3,
+                        type: 'line',
+                        yAxisID: 'y1',
+                        tension: 0.2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { weight: 'bold' } } } },
+                    scales: {
+                        y: { min: 400, max: 500, title: { display: true, text: '語数' } },
+                        y1: { min: 0, max: 4, position: 'right', ticks: { callback: v => v===2 ? '標準' : v===3 ? '難' : '' } }
+                    }
+                }
+            });
+        }
+
+        function updateChartType(type) { renderChart(type); }
+
+        // Past Question Viewer Functions
+        function viewProblem(id) {
+            const data = problems[id];
+            document.getElementById('viewYear').innerText = data.year;
+            document.getElementById('viewTitle').innerText = data.title;
+            document.getElementById('viewContent').innerText = data.content;
+            
+            const viewer = document.getElementById('problemViewer');
+            viewer.classList.remove('hidden');
+            viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeViewer() {
+            document.getElementById('problemViewer').classList.add('hidden');
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('button[id^="tab-"]').forEach(el => {
+                el.classList.remove('active-tab');
+                el.classList.add('text-stone-500');
+            });
+
+            document.getElementById('content-' + tabId).classList.add('active');
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('text-stone-500');
+            activeBtn.classList.add('active-tab');
+        }
+    </script>
+</body>
+</html>
