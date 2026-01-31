@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,60 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfbf7; color: #4a4a4a; scroll-behavior: smooth; }
-        .chart-container { 
-            position: relative; 
-            width: 100%; 
-            max-width: 700px; 
-            margin-left: auto; 
-            margin-right: auto; 
-            height: 350px; 
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #fdfbf7;
+            color: #4a4a4a;
+            scroll-behavior: smooth;
         }
-        .active-tab { border-bottom: 3px solid #d97706; color: #92400e; font-weight: 700; }
-        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        .problem-text { font-family: 'Georgia', 'serif'; line-height: 1.8; color: #2d3748; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+        }
+
+        .active-tab {
+            border-bottom: 3px solid #d97706;
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .problem-text {
+            font-family: 'Georgia', 'serif';
+            line-height: 1.8;
+            color: #2d3748;
+        }
     </style>
     <!-- Chosen Palette: Academic Gold & Stone. High contrast for readability. -->
     <!-- Application Structure Plan:
@@ -40,6 +80,7 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
+
 <body class="bg-stone-50 min-h-screen flex flex-col">
 
     <!-- Navigation -->
@@ -48,14 +89,44 @@
             <h1 class="text-xl font-bold text-stone-800 tracking-tight">
                 <span class="text-amber-600">FUKUCHIYAMA</span> Exam Lab
             </h1>
+
+            <!-- Desktop Nav -->
             <nav class="hidden md:flex space-x-8 text-sm font-bold text-stone-600">
                 <a href="#analysis" class="hover:text-amber-600 transition-colors">分析データ</a>
                 <a href="#archive" class="hover:text-amber-600 transition-colors">過去問アーカイブ</a>
                 <a href="#strategy" class="hover:text-amber-600 transition-colors">攻略法</a>
             </nav>
-            <a href="#archive" class="bg-amber-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-amber-700 transition shadow-md">
-                過去問を見る
-            </a>
+            <div class="hidden md:block">
+                <a href="#archive"
+                    class="bg-amber-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-amber-700 transition shadow-md">
+                    過去問を見る
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-stone-600 focus:outline-none p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobileMenu"
+            class="hidden md:hidden bg-white border-t border-stone-100 absolute w-full left-0 top-full shadow-lg">
+            <a href="#analysis" onclick="toggleMobileMenu()"
+                class="block px-6 py-4 text-sm font-bold text-stone-600 hover:bg-stone-50 border-b border-stone-100">分析データ</a>
+            <a href="#archive" onclick="toggleMobileMenu()"
+                class="block px-6 py-4 text-sm font-bold text-stone-600 hover:bg-stone-50 border-b border-stone-100">過去問アーカイブ</a>
+            <a href="#strategy" onclick="toggleMobileMenu()"
+                class="block px-6 py-4 text-sm font-bold text-stone-600 hover:bg-stone-50 border-b border-stone-100">攻略法</a>
+            <div class="p-6">
+                <a href="#archive" onclick="toggleMobileMenu()"
+                    class="block w-full text-center bg-amber-600 text-white px-5 py-3 rounded-xl text-sm font-bold hover:bg-amber-700 transition shadow-md">
+                    過去問を見る
+                </a>
+            </div>
         </div>
     </header>
 
@@ -64,7 +135,8 @@
         <section class="relative bg-white pt-20 pb-16 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="text-center">
-                    <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-amber-700 uppercase bg-amber-100 rounded-full">
+                    <span
+                        class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-amber-700 uppercase bg-amber-100 rounded-full">
                         地域経営学部 受験生必見
                     </span>
                     <h2 class="text-4xl md:text-6xl font-extrabold text-stone-900 mb-6 leading-tight">
@@ -74,13 +146,17 @@
                         直近3ヵ年の出題傾向を完全解剖。出題意図を理解し、200字要約を攻略するための「読み方」と「解き方」を伝授します。
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <a href="#archive" class="px-8 py-4 bg-stone-900 text-white rounded-xl font-bold text-lg hover:bg-stone-800 transition shadow-lg">過去問アーカイブへ</a>
-                        <a href="#analysis" class="px-8 py-4 bg-white text-stone-900 border-2 border-stone-200 rounded-xl font-bold text-lg hover:bg-stone-50 transition">分析を見る</a>
+                        <a href="#archive"
+                            class="px-8 py-4 bg-stone-900 text-white rounded-xl font-bold text-lg hover:bg-stone-800 transition shadow-lg">過去問アーカイブへ</a>
+                        <a href="#analysis"
+                            class="px-8 py-4 bg-white text-stone-900 border-2 border-stone-200 rounded-xl font-bold text-lg hover:bg-stone-50 transition">分析を見る</a>
                     </div>
                 </div>
             </div>
             <!-- Visual Element (Circle Background) -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-stone-50 rounded-full -z-0"></div>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-stone-50 rounded-full -z-0">
+            </div>
         </section>
 
         <!-- Benefits Section -->
@@ -115,11 +191,13 @@
                         <p class="text-stone-600">過去3年間のデータを比較し、戦略的な学習計画を立てましょう。</p>
                     </div>
                     <div class="flex gap-2 mt-4">
-                        <button onclick="updateChartType('bar')" class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Bar</button>
-                        <button onclick="updateChartType('line')" class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Line</button>
+                        <button onclick="updateChartType('bar')"
+                            class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Bar</button>
+                        <button onclick="updateChartType('line')"
+                            class="px-4 py-2 text-xs font-bold bg-stone-100 rounded-lg hover:bg-stone-200 uppercase">Line</button>
                     </div>
                 </div>
-                
+
                 <div class="bg-stone-50 rounded-3xl p-8 border border-stone-100">
                     <div class="chart-container">
                         <canvas id="examTrendChart"></canvas>
@@ -136,35 +214,44 @@
                     <p class="text-stone-600">年度をクリックして、実際の試験問題（英文）を確認できます。</p>
                 </div>
 
-                <div class="grid lg:grid-cols-4 gap-6 mb-12">
-                    <button onclick="viewProblem('R7')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-amber-600 text-left">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <button onclick="viewProblem('R7')"
+                        class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-amber-600 text-left">
                         <span class="text-xs font-bold text-amber-600 mb-1 block">令和7年度（2025）</span>
                         <h4 class="font-bold text-stone-800 text-lg mb-2">伝統産業の復興</h4>
-                        <p class="text-xs text-stone-500">Noto's Cultural Industries: Keep Local Craft Traditions Alive...</p>
+                        <p class="text-xs text-stone-500">Noto's Cultural Industries: Keep Local Craft Traditions
+                            Alive...</p>
                     </button>
-                    <button onclick="viewProblem('R6')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
+                    <button onclick="viewProblem('R6')"
+                        class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
                         <span class="text-xs font-bold text-stone-500 mb-1 block">令和6年度（2024）</span>
                         <h4 class="font-bold text-stone-800 text-lg mb-2">人口減少社会</h4>
                         <p class="text-xs text-stone-500">Japan tries to confront its ever-shrinking population...</p>
                     </button>
-                    <button onclick="viewProblem('R5')" class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
+                    <button onclick="viewProblem('R5')"
+                        class="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition card-hover border-b-4 border-stone-400 text-left">
                         <span class="text-xs font-bold text-stone-500 mb-1 block">令和5年度（2023）</span>
                         <h4 class="font-bold text-stone-800 text-lg mb-2">多文化共生教育</h4>
-                        <p class="text-xs text-stone-500">Japan’s education system is failing kids with foreign roots...</p>
+                        <p class="text-xs text-stone-500">Japan’s education system is failing kids with foreign roots...
+                        </p>
                     </button>
-                    <div class="p-6 bg-stone-200/50 rounded-2xl border-2 border-dashed border-stone-400 flex items-center justify-center text-center">
+                    <div
+                        class="p-6 bg-stone-200/50 rounded-2xl border-2 border-dashed border-stone-400 flex items-center justify-center text-center">
                         <p class="text-stone-500 font-bold text-sm">令和8年度<br>予想問題 準備中</p>
                     </div>
                 </div>
 
                 <!-- Problem Viewer Container -->
-                <div id="problemViewer" class="bg-white rounded-3xl shadow-xl overflow-hidden hidden animate-fadeIn border border-stone-200">
+                <div id="problemViewer"
+                    class="bg-white rounded-3xl shadow-xl overflow-hidden hidden animate-fadeIn border border-stone-200">
                     <div class="bg-stone-900 text-white p-6 flex justify-between items-center">
                         <div>
-                            <span id="viewYear" class="text-xs font-bold text-amber-400 uppercase tracking-widest">YEAR</span>
+                            <span id="viewYear"
+                                class="text-xs font-bold text-amber-400 uppercase tracking-widest">YEAR</span>
                             <h3 id="viewTitle" class="text-xl font-bold">タイトル</h3>
                         </div>
-                        <button onclick="closeViewer()" class="text-stone-400 hover:text-white transition">閉じる ×</button>
+                        <button onclick="closeViewer()" class="text-stone-400 hover:text-white transition">閉じる
+                            ×</button>
                     </div>
                     <div class="p-8 md:p-12 max-h-[600px] overflow-y-auto">
                         <div id="viewContent" class="problem-text text-lg whitespace-pre-wrap">
@@ -182,10 +269,13 @@
         <!-- Strategy Tabs Section -->
         <section id="strategy" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex overflow-x-auto border-b border-stone-200 mb-10">
-                    <button onclick="switchTab('linguistic')" id="tab-linguistic" class="active-tab px-8 py-4 text-sm font-bold whitespace-nowrap">言語学的分析</button>
-                    <button onclick="switchTab('thematic')" id="tab-thematic" class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">テーマ考察</button>
-                    <button onclick="switchTab('summary')" id="tab-summary" class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">要約の極意</button>
+                <div class="flex overflow-x-auto border-b border-stone-200 mb-10 pb-1">
+                    <button onclick="switchTab('linguistic')" id="tab-linguistic"
+                        class="active-tab px-8 py-4 text-sm font-bold whitespace-nowrap">言語学的分析</button>
+                    <button onclick="switchTab('thematic')" id="tab-thematic"
+                        class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">テーマ考察</button>
+                    <button onclick="switchTab('summary')" id="tab-summary"
+                        class="px-8 py-4 text-sm font-bold text-stone-500 whitespace-nowrap">要約の極意</button>
                 </div>
 
                 <div id="content-linguistic" class="tab-content active">
@@ -194,17 +284,21 @@
                             <h3 class="text-2xl font-bold mb-6">難易度と語彙の傾向</h3>
                             <ul class="space-y-6">
                                 <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">1</span>
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">1</span>
                                     <div>
                                         <h4 class="font-bold mb-1">社説特有の論理構造</h4>
-                                        <p class="text-stone-600 text-sm">英字新聞の社説は「導入（ニュース）→分析（課題）→提言（未来）」の順で構成されます。この流れを意識するだけで読解速度が上がります。</p>
+                                        <p class="text-stone-600 text-sm">
+                                            英字新聞の社説は「導入（ニュース）→分析（課題）→提言（未来）」の順で構成されます。この流れを意識するだけで読解速度が上がります。</p>
                                     </div>
                                 </li>
                                 <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">2</span>
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold">2</span>
                                     <div>
                                         <h4 class="font-bold mb-1">無生物主語の処理能力</h4>
-                                        <p class="text-stone-600 text-sm">`This focus on the young conflicts with...` のような主語を「若者への注力によって〜」と動詞的に訳す力が求められます。</p>
+                                        <p class="text-stone-600 text-sm">`This focus on the young conflicts with...`
+                                            のような主語を「若者への注力によって〜」と動詞的に訳す力が求められます。</p>
                                     </div>
                                 </li>
                             </ul>
@@ -212,12 +306,23 @@
                         <div class="bg-stone-50 p-8 rounded-2xl border border-stone-100">
                             <h4 class="font-bold mb-4">頻出キーワード例</h4>
                             <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Intangible Cultural Property</span>
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Demographic crisis</span>
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Regional disparity</span>
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Division of labor</span>
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Life expectancy</span>
-                                <span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Opportunities</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Intangible
+                                    Cultural Property</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Demographic
+                                    crisis</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Regional
+                                    disparity</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Division
+                                    of labor</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Life
+                                    expectancy</span>
+                                <span
+                                    class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium">Opportunities</span>
                             </div>
                         </div>
                     </div>
@@ -233,7 +338,8 @@
                         <div class="grid gap-4">
                             <div class="p-6 bg-amber-50 rounded-xl">
                                 <h5 class="font-bold text-amber-900 mb-2 underline decoration-amber-200">リーダーの視点で読む</h5>
-                                <p class="text-sm text-stone-700 leading-relaxed">「大変だ」で終わるのではなく、「どのような制度的・経済的な打ち手が必要か」という解決策（対策案）までを読み取ることが高得点の鍵です。</p>
+                                <p class="text-sm text-stone-700 leading-relaxed">
+                                    「大変だ」で終わるのではなく、「どのような制度的・経済的な打ち手が必要か」という解決策（対策案）までを読み取ることが高得点の鍵です。</p>
                             </div>
                         </div>
                     </div>
@@ -244,15 +350,18 @@
                     <div class="grid md:grid-cols-3 gap-8">
                         <div class="p-8 bg-stone-900 text-white rounded-2xl">
                             <h4 class="text-amber-400 font-bold mb-4">Step 1: 骨組みの抽出</h4>
-                            <p class="text-sm opacity-80 leading-relaxed">各段落のトピックセンテンス（第1文付近）を拾い、文章の論理マップ（現状→原因→対策）を作ります。</p>
+                            <p class="text-sm opacity-80 leading-relaxed">
+                                各段落のトピックセンテンス（第1文付近）を拾い、文章の論理マップ（現状→原因→対策）を作ります。</p>
                         </div>
                         <div class="p-8 bg-stone-900 text-white rounded-2xl">
                             <h4 class="text-amber-400 font-bold mb-4">Step 2: 抽象化（リライト）</h4>
-                            <p class="text-sm opacity-80 leading-relaxed">具体的な地名や特定の数値を「被災地」「人口指標」などの一般名称に置き換え、文字数を節約します。</p>
+                            <p class="text-sm opacity-80 leading-relaxed">
+                                具体的な地名や特定の数値を「被災地」「人口指標」などの一般名称に置き換え、文字数を節約します。</p>
                         </div>
                         <div class="p-8 bg-stone-900 text-white rounded-2xl">
                             <h4 class="text-amber-400 font-bold mb-4">Step 3: 日本語の整合性</h4>
-                            <p class="text-sm opacity-80 leading-relaxed">最後に「〜である」「〜が重要だ」などの結びを整え、200字という限られた枠内で一貫性を持たせます。</p>
+                            <p class="text-sm opacity-80 leading-relaxed">
+                                最後に「〜である」「〜が重要だ」などの結びを整え、200字という限られた枠内で一貫性を持たせます。</p>
                         </div>
                     </div>
                 </div>
@@ -267,7 +376,8 @@
                     分析レポートを読み込み、過去問アーカイブで実際のスピード感を体感してください。
                     地域をリードする未来の大学生を応援しています。
                 </p>
-                <a href="#archive" class="inline-block px-10 py-5 bg-amber-600 text-white rounded-full font-bold text-xl hover:bg-amber-700 transition shadow-xl">
+                <a href="#archive"
+                    class="inline-block px-10 py-5 bg-amber-600 text-white rounded-full font-bold text-xl hover:bg-amber-700 transition shadow-xl">
                     過去問を今すぐチェック
                 </a>
             </div>
@@ -275,7 +385,8 @@
     </main>
 
     <footer class="bg-stone-950 text-stone-600 py-10 border-t border-stone-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-sm">
                 &copy; 2025 Fukuchiyama Exam Analysis Portal. All rights reserved.
             </div>
@@ -344,7 +455,7 @@ While almost all junior high graduates go on to high school or vocational school
 
         let chartInstance = null;
 
-        window.onload = function() {
+        window.onload = function () {
             if (typeof Chart !== 'undefined') {
                 renderChart('bar');
             }
@@ -381,7 +492,7 @@ While almost all junior high graduates go on to high school or vocational school
                     plugins: { legend: { position: 'bottom', labels: { font: { weight: 'bold' } } } },
                     scales: {
                         y: { min: 400, max: 500, title: { display: true, text: '語数' } },
-                        y1: { min: 0, max: 4, position: 'right', ticks: { callback: v => v===2 ? '標準' : v===3 ? '難' : '' } }
+                        y1: { min: 0, max: 4, position: 'right', ticks: { callback: v => v === 2 ? '標準' : v === 3 ? '難' : '' } }
                     }
                 }
             });
@@ -395,7 +506,7 @@ While almost all junior high graduates go on to high school or vocational school
             document.getElementById('viewYear').innerText = data.year;
             document.getElementById('viewTitle').innerText = data.title;
             document.getElementById('viewContent').innerText = data.content;
-            
+
             const viewer = document.getElementById('problemViewer');
             viewer.classList.remove('hidden');
             viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -418,6 +529,12 @@ While almost all junior high graduates go on to high school or vocational school
             activeBtn.classList.remove('text-stone-500');
             activeBtn.classList.add('active-tab');
         }
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
     </script>
 </body>
+
 </html>
